@@ -1,6 +1,3 @@
-# NexonGameStarter
-A simple game starter for Nexon games
-
 # Requirements
 The application requires .NET Framework 4.7, you can find them on microsoft's website: https://www.microsoft.com/net/download/dotnet-framework-runtime
 
