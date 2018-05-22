@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameStarter.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,28 +9,26 @@ namespace GameStarter
 {
     public enum StartMode
     {
-        Launch = 0,
+        Launch,
         Patch,
     }
 
     public partial class BrowserForm : MyForm
     {
-        private const string UrlFormat = "ngm://launch/ -locale:KR -mode:{3} -game:{0}:0 -token:'{1}' -a2sk:'{2}'";
-        private const string LoginUrl = "https://clogin.nexon.com/common/clogin.aspx";
+        private const string UrlFormat = "ngm://launch/ -locale:{4} -mode:{3} -game:{0}:0 -token:'{1}' -a2sk:'{2}'";
 
-        private Dictionary<StartMode, string> StartModes = new Dictionary<StartMode, string>()
+        private readonly Dictionary<StartMode, string> StartModes = new Dictionary<StartMode, string>()
         {
             { StartMode.Launch, "launch" },
             { StartMode.Patch, "restore" },
         };
-
-        public string SelectedMode => this.StartModes[(StartMode)this.ModeToolStripComboBox.SelectedItem];
 
         public BrowserForm()
         {
             this.InitializeComponent();
 
             this.ModeToolStripComboBox.ComboBox.DataSource = this.StartModes.Keys.ToList();
+            this.ModeToolStripComboBox.SelectedItem = Settings.Default.StartMode;
         }
 
         private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
@@ -48,7 +47,9 @@ namespace GameStarter
                     return;
                 }
 
-                string launchUri = String.Format(UrlFormat, Arguments.GameId, nppString, a2skString, this.SelectedMode);
+                string mode = this.StartModes[(StartMode)this.ModeToolStripComboBox.SelectedItem];
+                string locale = Arguments.StartLocale;
+                string launchUri = String.Format(UrlFormat, Arguments.GameId, nppString, a2skString, mode, locale);
                 string escapedUri = Uri.EscapeUriString(launchUri);
 
                 e.Cancel = true;
@@ -70,7 +71,16 @@ namespace GameStarter
 
         private void LoginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.WebBrowser.Navigate(LoginUrl);
+            this.WebBrowser.Navigate(Arguments.LoginUrl);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            Settings.Default.StartMode = (StartMode)this.ModeToolStripComboBox.SelectedItem;
+
+            Settings.Default.Save();
         }
     }
 }

@@ -8,5 +8,8 @@
     <Setting Name="IsMaximised" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="StartMode" Type="GameStarter.StartMode" Scope="User">
+      <Value Profile="(Default)">Launch</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
