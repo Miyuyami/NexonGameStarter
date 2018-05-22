@@ -16,4 +16,5 @@ Second argument is the locale and the third argument is the login url.
 
 # Other things to note
 I only tested this with MapleStory 2 and Elsword, both being the Korean version. Some games don't allow some certain "modes" (Launch/Patch).
+
 If you know other modes out there feel free to post an issue and I'll try to look into it!
