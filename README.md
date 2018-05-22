@@ -1,6 +1,9 @@
 # NexonGameStarter
 A simple game starter for Nexon games
 
+# Requirements
+The application requires .NET Framework 4.7, you can find them on microsoft's website: https://www.microsoft.com/net/download/dotnet-framework-runtime
+
 # How to use
 First thing is that you must have the NGM (Nexon Game Manager) installed.
 Then you must find out the GameID of the game you want to start.
