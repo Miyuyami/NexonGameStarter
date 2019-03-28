@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace GameStarter
@@ -11,7 +10,7 @@ namespace GameStarter
         {
             var result = new Dictionary<string, string>();
 
-            string[] cookieStrings = webBrowser.Document.Cookie?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] cookieStrings = webBrowser.Document?.Cookie?.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (cookieStrings != null)
             {

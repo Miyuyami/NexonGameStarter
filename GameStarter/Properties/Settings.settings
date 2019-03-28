@@ -11,5 +11,8 @@
     <Setting Name="StartMode" Type="GameStarter.StartMode" Scope="User">
       <Value Profile="(Default)">Launch</Value>
     </Setting>
+    <Setting Name="Architecture" Type="GameStarter.Architecture" Scope="User">
+      <Value Profile="(Default)">x64</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

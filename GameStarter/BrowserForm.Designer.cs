@@ -32,6 +32,7 @@
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.LoginPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModeToolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.ArchitectureToolStripComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,14 +46,15 @@
             this.WebBrowser.ScriptErrorsSuppressed = true;
             this.WebBrowser.Size = new System.Drawing.Size(784, 534);
             this.WebBrowser.TabIndex = 0;
-            this.WebBrowser.Url = new System.Uri("https://clogin.nexon.com/common/clogin.aspx", System.UriKind.Absolute);
-            this.WebBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.WebBrowser_Navigating);
+            this.WebBrowser.Url = new System.Uri("", System.UriKind.Relative);
+            this.WebBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.WebBrowser_Navigated);
             // 
             // MenuStrip
             // 
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LoginPageToolStripMenuItem,
-            this.ModeToolStripComboBox});
+            this.ModeToolStripComboBox,
+            this.ArchitectureToolStripComboBox});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Size = new System.Drawing.Size(784, 27);
@@ -62,14 +64,19 @@
             // LoginPageToolStripMenuItem
             // 
             this.LoginPageToolStripMenuItem.Name = "LoginPageToolStripMenuItem";
-            this.LoginPageToolStripMenuItem.Size = new System.Drawing.Size(107, 23);
-            this.LoginPageToolStripMenuItem.Text = "Go to login page";
+            this.LoginPageToolStripMenuItem.Size = new System.Drawing.Size(58, 23);
+            this.LoginPageToolStripMenuItem.Text = "Refresh";
             this.LoginPageToolStripMenuItem.Click += new System.EventHandler(this.LoginPageToolStripMenuItem_Click);
             // 
             // ModeToolStripComboBox
             // 
             this.ModeToolStripComboBox.Name = "ModeToolStripComboBox";
             this.ModeToolStripComboBox.Size = new System.Drawing.Size(121, 23);
+            // 
+            // ArchitectureToolStripComboBox
+            // 
+            this.ArchitectureToolStripComboBox.Name = "ArchitectureToolStripComboBox";
+            this.ArchitectureToolStripComboBox.Size = new System.Drawing.Size(80, 23);
             // 
             // BrowserForm
             // 
@@ -94,6 +101,7 @@
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem LoginPageToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox ModeToolStripComboBox;
+        private System.Windows.Forms.ToolStripComboBox ArchitectureToolStripComboBox;
     }
 }
 

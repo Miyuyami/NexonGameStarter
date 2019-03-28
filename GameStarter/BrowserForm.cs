@@ -1,9 +1,9 @@
-﻿using GameStarter.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using GameStarter.Properties;
 
 namespace GameStarter
 {
@@ -13,9 +13,17 @@ namespace GameStarter
         Patch,
     }
 
+#pragma warning disable IDE1006 // Naming Styles
+    public enum Architecture
+    {
+        x32,
+        x64,
+    }
+#pragma warning restore IDE1006 // Naming Styles
+
     public partial class BrowserForm : MyForm
     {
-        private const string UrlFormat = "ngm://launch/ -locale:{4} -mode:{3} -game:{0}:0 -token:'{1}' -a2sk:'{2}'";
+        private const string UrlFormat = "ngm://launch/ -locale:{4} -mode:{3} -game:{0}:0 -token:'{1}' -a2sk:'{2}' -architectureplatform:'{5}'";
 
         private readonly Dictionary<StartMode, string> StartModes = new Dictionary<StartMode, string>()
         {
@@ -23,16 +31,29 @@ namespace GameStarter
             { StartMode.Patch, "restore" },
         };
 
+        private readonly Dictionary<Architecture, string> StartArchitectures = new Dictionary<Architecture, string>()
+        {
+            { Architecture.x32, "none" },
+            { Architecture.x64, "x64" },
+        };
+
         public BrowserForm()
         {
             this.InitializeComponent();
 
+            this.WebBrowser.Url = new Uri(Arguments.LoginRedirectUrl);
+
             this.ModeToolStripComboBox.ComboBox.DataSource = this.StartModes.Keys.ToList();
             this.ModeToolStripComboBox.SelectedItem = Settings.Default.StartMode;
+
+            this.ArchitectureToolStripComboBox.ComboBox.DataSource = this.StartArchitectures.Keys.ToList();
+            this.ArchitectureToolStripComboBox.SelectedItem = Settings.Default.Architecture;
         }
 
-        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        private void WebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
+            Debug.WriteLine($"Navigated: {e.Url}");
+
             if (sender is WebBrowser webBrowser)
             {
                 Dictionary<string, string> cookies = webBrowser.GetCookies();
@@ -41,18 +62,20 @@ namespace GameStarter
                 {
                     return;
                 }
+                Debug.WriteLine("Found NPP");
 
                 if (!cookies.TryGetValue("A2SK", out string a2skString))
                 {
                     return;
                 }
+                Debug.WriteLine("Found A2SK");
 
                 string mode = this.StartModes[(StartMode)this.ModeToolStripComboBox.SelectedItem];
+                string architecture = this.StartArchitectures[(Architecture)this.ArchitectureToolStripComboBox.SelectedItem];
                 string locale = Arguments.StartLocale;
-                string launchUri = String.Format(UrlFormat, Arguments.GameId, nppString, a2skString, mode, locale);
+                string launchUri = String.Format(UrlFormat, Arguments.GameId, nppString, a2skString, mode, locale, architecture);
                 string escapedUri = Uri.EscapeUriString(launchUri);
-
-                e.Cancel = true;
+                
                 webBrowser.AllowNavigation = false;
                 webBrowser.Visible = false;
 
@@ -64,14 +87,19 @@ namespace GameStarter
         {
             this.Visible = false;
 
-            Process.Start(url);
-
-            Application.Exit();
+            try
+            {
+                Process.Start(url);
+            }
+            finally
+            {
+                Application.Exit();
+            }
         }
 
         private void LoginPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.WebBrowser.Navigate(Arguments.LoginUrl);
+            this.WebBrowser.Navigate(Arguments.LoginRedirectUrl);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
