@@ -16,6 +16,7 @@ namespace GameStarter
 #pragma warning disable IDE1006 // Naming Styles
     public enum Architecture
     {
+        Auto,
         x32,
         x64,
     }
@@ -23,7 +24,7 @@ namespace GameStarter
 
     public partial class BrowserForm : MyForm
     {
-        private const string UrlFormat = "ngm://launch/ -locale:{4} -mode:{3} -game:{0}:0 -token:'{1}' -a2sk:'{2}' -architectureplatform:'{5}'";
+        private const string UrlFormat = "ngm://launch/ -dll:platform.nexon.com/NGM/Bin/NGMDll.dll:1 -locale:{4} -mode:{3} -game:{0}:0 -token:'{1}' -passarg:'null' -a2sk:'{2}' -architectureplatform:'{5}'";
 
         private readonly Dictionary<StartMode, string> StartModes = new Dictionary<StartMode, string>()
         {
@@ -33,7 +34,8 @@ namespace GameStarter
 
         private readonly Dictionary<Architecture, string> StartArchitectures = new Dictionary<Architecture, string>()
         {
-            { Architecture.x32, "none" },
+            { Architecture.Auto, "auto" },
+            { Architecture.x32, "x86" },
             { Architecture.x64, "x64" },
         };
 
@@ -107,6 +109,7 @@ namespace GameStarter
             base.OnFormClosing(e);
 
             Settings.Default.StartMode = (StartMode)this.ModeToolStripComboBox.SelectedItem;
+            Settings.Default.Architecture = (Architecture)this.ArchitectureToolStripComboBox.SelectedItem;
 
             Settings.Default.Save();
         }
