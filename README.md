@@ -1,5 +1,6 @@
 # Requirements
 The application requires .NET Framework 4.7, you can find them on microsoft's website: https://www.microsoft.com/net/download/dotnet-framework-runtime
+As of 2/24/2021, Nexon changed security settings on their website(s), and now require IE version 10 or higher to function properly. This application has been adjusted to work with only IE 10 or higher, and will not function otherwise. If you are on an older computer, seek common Windows update guidance and/or download the latest IE version for your computer.
 
 # How to use
 First thing is that you must have the NGM (Nexon Game Manager) installed.
